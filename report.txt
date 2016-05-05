@@ -1,0 +1,105 @@
+::TEST 1::
+We try to run a process with memory usage exceeding our size of main memory.
+
+Input:
+0 4 98 15
+3 2 33 20
+5 1 100 10
+16 5 150 12
+20 3 5 15
+
+Command Line:
+simulation -f test1.txt -a fcfs -m 100
+
+Results:
+Error: Process memory usage is more than available memory!
+
+It throws an error when reading. We could have ignored that process itself but
+that would not model an actual scenario.
+
+==================================================================================
+We base the following quantums of these:
+
+Normal: 2, 4, 8
+Large: 4, 8, 16
+Very Large: 8, 16, 32
+
+
+::TEST 2::
+Using a normal quantum with many small processes (process time < 4), we examine
+the burst-time as compared to a large quantum.
+
+Input:
+0 4 98 3
+1 4 95 4
+2 4 30 4
+3 4 20 3
+4 4 37 2
+5 2 33 1
+6 1 100 4
+
+Command Line:
+simulation -f test2.txt -a multi -m 100
+
+Results:
+Quantum (2, 4, 8): Simulation finishes at time 21 with 13 process runs.
+Quantum (4, 8, 16): Simulation finishes at time 21 with 8 process runs.
+
+Large quantum acts more like a FCFS while smaller quantum is leaning towards
+a round-robin algorithm.
+
+==================================================================================
+
+::TEST 3::
+Using a normal quantum with large processes (process time > 20), we examine
+the burst-time and throughput as compared to a very large quantum
+
+Input:
+0 4 98 20
+1 4 32 24
+2 4 20 27
+3 4 40 31
+
+Command Line:
+Same as Test 2
+
+Results:
+Quantum (2, 4, 8): Simulation finishes at time 102 with 21 process runs.
+Quantum (8, 16, 32): Simulation finishes at time 102 with 11 process runs.
+
+Normal quantum has a relatively high burst-time as compared to a very large
+quantum, while the very large quantum has magnitudes better throughput in
+comparison.
+
+==================================================================================
+
+::TEST 4::
+Using a larger main memory allows more processes to be stored in the memory.
+In actual use cases, this leads to faster total processes completion, as we 
+do not have to swap or remove-and-load old processes for new ones as much.
+(or keep commonly used processes in memory)
+
+Input:
+0 4 98 15
+3 2 33 20
+5 1 100 10
+20 3 5 15
+
+Command Lines:
+simulation -f test3.txt -a multi -m 100
+simulation -f test3.txt -a multi -m 200
+
+Results:
+Maximum number of processes in memory is 4 for 500Mb (i.e. all processes)
+as compared to just 2 for 100Mb. This is only good for multi and not
+fcfs though!
+
+
+
+
+
+
+
+
+
+
