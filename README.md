@@ -1,2 +1,1 @@
-# Computer-Systems-Project1
-COMP30023
+# Archived university project
